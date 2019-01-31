@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/magnitude"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="16dp"
+        android:background="@drawable/magnitude_circle"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:text="8.9" />
+    <TextView
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:id="@+id/distance"
+        android:paddingTop="16sp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/direction"/>
+    <TextView
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:id="@+id/place"
+        android:layout_below="@id/distance"
+        android:layout_centerHorizontal="true"
+        android:text="@string/san_fransisco"/>
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="0dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/date"
+        android:textSize="16sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date"
+        android:id="@+id/time"
+        android:paddingRight="16dp"
+        android:layout_alignParentRight="true"
+        android:textSize="16sp"
+        android:text="@string/time"/>
+
+</RelativeLayout>

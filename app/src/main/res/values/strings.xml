@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Quake</string>
+    <string name="san_fransisco">San Fransisco</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="direction">Direction</string>
+</resources>
