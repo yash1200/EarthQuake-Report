@@ -1,53 +1,61 @@
 package com.example.yash.earthquake;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
+
+    String BASE_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=6&limit=10";
+    private ProgressDialog pDialog;
+    ArrayList<EarthQuake> earthquake = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        new GetContributors().execute();
+    }
 
-        Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl(Api.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+    private class GetContributors extends AsyncTask<Void, Void, Void> {
 
-        Api api=retrofit.create(Api.class);
-        Call<List<EarthQuake>> call=api.getEarthQuake();
-        call.enqueue(new Callback<List<EarthQuake>>() {
-            @Override
-            public void onResponse(Call<List<EarthQuake>> call, Response<List<EarthQuake>> response) {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage("Loading...");
+            pDialog.setCancelable(false);
+            pDialog.show();
 
-                String USGS_REQUEST_URL=response.body().toString();
+        }
 
-                ArrayList<EarthQuake> earthquake= (ArrayList<EarthQuake>) QueryUtils.extractFeatureFromJson(USGS_REQUEST_URL);
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            String USGS_REQUEST_URL = new HttpDude().makeServiceCall(BASE_URL);
+            earthquake = (ArrayList<EarthQuake>) QueryUtils.extractFeatureFromJson(USGS_REQUEST_URL);
+            return null;
+        }
 
-                final EarthQuakeAdapter adapter=new EarthQuakeAdapter(MainActivity.this,R.layout.custom_list,earthquake);
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
 
-                ListView earthquakeListView=(ListView) findViewById(R.id.list);
+            if (pDialog.isShowing())
+                pDialog.dismiss();
 
-                earthquakeListView.setAdapter(adapter);
-            }
+            EarthQuakeAdapter adapter = new EarthQuakeAdapter(MainActivity.this, R.layout.custom_list, earthquake);
 
-            @Override
-            public void onFailure(Call<List<EarthQuake>> call, Throwable t)
-            {
-                Toast.makeText(getApplicationContext(),"Some Problem Occured",Toast.LENGTH_SHORT).show();
-            }
-        });
+            ListView earthquakeListView = findViewById(R.id.list);
+
+            earthquakeListView.setAdapter(adapter);
+
+        }
     }
 }

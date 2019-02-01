@@ -1,39 +1,37 @@
 package com.example.yash.earthquake;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class EarthQuakeAdapter extends ArrayAdapter<EarthQuake>
-{
-    private List<EarthQuake> earth;
-    private Context context;
-
-    public EarthQuakeAdapter(Context context, int resource, List<EarthQuake> earth) {
-        super(context, resource);
-        this.context=context;
-        this.earth = earth;
+public class EarthQuakeAdapter extends ArrayAdapter<EarthQuake> {
+    public EarthQuakeAdapter(Context context, int resource, ArrayList<EarthQuake> earth) {
+        super(context, resource, earth);
     }
 
     @Override
     public View getView(int position,View convertView, ViewGroup parent) {
-        View v = View.inflate(context, R.layout.custom_list, null);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View v = inflater.inflate(R.layout.custom_list, parent, false);
 
-        EarthQuake current=getItem(position);
+        EarthQuake current = getItem(position);
         String magnitude=Double.toString(current.getMagnitude());
-        TextView mag=(TextView)v.findViewById(R.id.magnitude);
+        TextView mag=v.findViewById(R.id.magnitude);
         mag.setText(magnitude);
 
         String location=current.getMlocation();
-        TextView place=(TextView)v.findViewById(R.id.place);
+        TextView place=v.findViewById(R.id.place);
         place.setText(location);
 
-        long time=current.getMtime();
-        TextView Time=(TextView)v.findViewById(R.id.time);
-        Time.setText((int) time);
+        long t=current.getMtime();
+        TextView time=v.findViewById(R.id.time);
+        time.setText(String.valueOf(t));
         return v;
     }
 }

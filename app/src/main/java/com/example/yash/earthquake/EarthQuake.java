@@ -28,4 +28,10 @@ public class EarthQuake
     public long getMtime() {
         return mtime;
     }
+
+    @Override
+    public String toString(){
+        String res=this.getMurl();
+        return  res;
+    }
 }
