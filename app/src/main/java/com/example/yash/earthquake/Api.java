@@ -7,8 +7,8 @@ import retrofit2.http.GET;
 
 public interface Api
 {
-    String BASE_URL="https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&";
+    String BASE_URL="https://earthquake.usgs.gov/fdsnws/event/1/";
 
-    @GET("minmag=6&limit=10")
+    @GET("query?format=geojson&orderby=time&minmag=6&limit=10")
     Call<List<EarthQuake>> getEarthQuake();
 }

@@ -32,19 +32,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<EarthQuake>> call, Response<List<EarthQuake>> response) {
 
-                ArrayList<EarthQuake> earthquake=new ArrayList<>();
+                String USGS_REQUEST_URL=response.body().toString();
 
-                List<EarthQuake> earthquakes= response.body();
-                for(int i=0;i<earthquakes.size();i++)
-                {
-                    Double mag=(earthquakes.get(i).getMagnitude());
-                    String loc=earthquakes.get(i).getMlocation();
-                    long time=earthquakes.get(i).getMtime();
-                    String url=earthquakes.get(i).getMurl();
-                    EarthQuake earthQuake=new EarthQuake(mag,loc,time,url);
-                    earthquake.add(earthQuake);
-
-                }
+                ArrayList<EarthQuake> earthquake= (ArrayList<EarthQuake>) QueryUtils.extractFeatureFromJson(USGS_REQUEST_URL);
 
                 final EarthQuakeAdapter adapter=new EarthQuakeAdapter(MainActivity.this,R.layout.custom_list,earthquake);
 
